@@ -10,7 +10,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     
-    entry: './src/app.js',
+    entry: './src/app.jsx',
     
     output: {
         // 打包到的位置, /dist
@@ -20,10 +20,17 @@ module.exports = {
         filename: 'app.js',
     },
 
+    resolve: {
+        alias: {
+            page: path.resolve(__dirname, 'src/page'),
+            component: path.resolve(__dirname, 'src/component')
+        }
+    },
+
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.jsx$/,
                 exclude: /(node_modules)/,
                 use: {
                     loader: 'babel-loader',
@@ -78,7 +85,9 @@ module.exports = {
 
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/index.html'
+            template: './src/index.html',
+            filename: 'index.html',
+            //favicon: './favicon.ico'
         }),
         // 打包出独立css文件，新css文件名作为参数
         new ExtractTextPlugin("css/[name].css"),
@@ -91,7 +100,10 @@ module.exports = {
     ],
     
     devServer: {
-        contentBase: path.join(__dirname, 'dist'),
-        port: 9000
+        port: 8086,
+        // 访问路径时若无法找到，返回指定也main
+        historyApiFallback: {
+            index: '/dist/index.html'
+        }
     }
 }
