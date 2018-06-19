@@ -87,7 +87,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',
             filename: 'index.html',
-            //favicon: './favicon.ico'
+            favicon: './bookstore.ico'
         }),
         // 打包出独立css文件，新css文件名作为参数
         new ExtractTextPlugin("css/[name].css"),

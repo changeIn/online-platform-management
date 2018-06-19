@@ -15,7 +15,7 @@ class NavTop extends React.Component {
         return(
             <div className="navbar navbar-default top-navbar">
                 <div className="navbar-header">
-                    <Link className="navbar-brand" to="index.html"><b>M</b>Mall</Link>
+                    <Link className="navbar-brand" to="/"><b>M</b>Mall</Link>
                 </div>
 
                 <ul className="nav navbar-top-links navbar-right">
