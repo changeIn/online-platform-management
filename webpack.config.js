@@ -23,7 +23,9 @@ module.exports = {
     resolve: {
         alias: {
             page: path.resolve(__dirname, 'src/page'),
-            component: path.resolve(__dirname, 'src/component')
+            component: path.resolve(__dirname, 'src/component'),
+            util: path.resolve(__dirname, 'src/util'),
+            service: path.resolve(__dirname, 'src/service'),
         }
     },
 
@@ -104,6 +106,17 @@ module.exports = {
         // 访问路径时若无法找到，返回指定也main
         historyApiFallback: {
             index: '/dist/index.html'
+        },
+        // 跨域劫持，修改域名
+        proxy: {
+            '/manage': {
+                target: 'http://admintest.happymmall.com',
+                changeOrigin: true
+            },
+            '/user/logout.do': {
+                target: 'http://admintest.happymmall.com',
+                changeOrigin: true
+            }
         }
     }
 }
