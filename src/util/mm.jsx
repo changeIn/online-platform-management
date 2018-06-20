@@ -7,7 +7,7 @@ class MUtil {
                 url: param.url || '',
                 dataType: param.dataType || 'json',
                 data: param.data || null,
-                success(res){
+                success: res => {
                     if(0 === res.status) {
                         // 登录成功
                         typeof resolve === 'function' && resolve(res.data, res.msg);
@@ -19,7 +19,7 @@ class MUtil {
                         typeof reject === 'function' && reject(res.msg || res.data);
                     }
                 },
-                error(err){
+                error: err => {
                     typeof reject === 'function' && reject(err.statusText);
                 }
             });  

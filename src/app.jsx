@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Redirect, Route, Link } from 'react-ro
 import Home from 'page/home/index.jsx';
 import Login from 'page/login/index.jsx';
 import ErrorPage from 'page/error/index.jsx';
+import UserList from 'page/user/index.jsx';
 import Layout from 'component/layout/index.jsx';
 
 
@@ -15,21 +16,25 @@ class App extends React.Component {
     }
 
     render(){
+        let LayoutRouter = (
+            <Layout>
+                <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route path="/product" component={Home} />
+                    <Route path="/product-category" component={Home} />
+                    <Route path="/user/index" component={UserList} />
+                    <Redirect exact from="/user" to="/user/index" />
+                    <Route component={ErrorPage} />
+                </Switch>
+            </Layout>
+        );
+
         return(
             /* Router只能有一个子组件，Switch只匹配第一个匹配到的东西 */
             <Router>
                 <Switch>
                     <Route path="/login" component={Login} />
-                    <Route path="/" render={()=>(
-                        <Layout>
-                            <Switch>
-                                <Route exact path="/" component={Home} />
-                                <Route path="/product" component={Home} />
-                                <Route path="/product-category" component={Home} />
-                                <Route component={ErrorPage} />
-                            </Switch> 
-                        </Layout>
-                    )}/>
+                    <Route path="/" render={ props => LayoutRouter}/>
                 </Switch>
                
             </Router>
