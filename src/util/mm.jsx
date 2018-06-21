@@ -40,6 +40,10 @@ class MUtil {
         return result ? encodeURIComponent(result[2]) : null;
     }
 
+    successTips(successMsg) {
+        alert(successMsg || '操作成功');
+    }
+
     errorTips(errMsg) {
         alert(errMsg || '好像哪里不对了。。。');
     }

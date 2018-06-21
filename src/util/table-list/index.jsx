@@ -10,7 +10,7 @@ class TableList extends React.Component {
     }
 
     componentWillReceiveProps() {
-        // 列表在第一次挂在时候，isFirstLoading为true
+        // 列表仅仅在第一次挂在时候，isFirstLoading为true
         this.setState({
             isFirstLoading: false
         })
@@ -18,15 +18,19 @@ class TableList extends React.Component {
 
     render() {
 
-        let tableHeader = this.props.tableHeads.map((tableHead, index) =>
-           <th key={index}>{tableHead}</th>
-        );
+        let tableHeader = this.props.tableHeads.map((tableHead, index) => {
+           if(typeof tableHead === 'object') {
+                return <th key={index} width={tableHead.width}>{tableHead.name}</th>
+           } else {
+               return <th key={index}>{tableHead}</th>
+           }
+        });
 
         let listBody = this.props.children;
 
         let listInfo = (
              <tr>
-                <td colSpan={this.props.tableHeads} className="text-center">
+                <td colSpan={this.props.tableHeads.length} className="text-center">
                     {this.state.isFirstLoading ? '正在加载数据...' : '无法加载数据'}
                 </td>
             </tr>
