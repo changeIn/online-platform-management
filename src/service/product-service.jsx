@@ -4,7 +4,6 @@ const _mm = new MUtil();
 class Product {
 
     getProductList(listParam) {
-
         let url = '', data = {};
 
         if(listParam.listType === 'list') {
@@ -28,6 +27,17 @@ class Product {
             type: 'post', 
             url: '/manage/product/set_sale_status.do',
             data: productInfo
+        });
+    }
+
+
+    getCategoryList(parentCategoryId){
+        return _mm.request({
+            type: 'get',
+            url: '/manage/category/get_category.do',
+            data: {
+                categoryId: parentCategoryId
+            }
         });
     }
 }
