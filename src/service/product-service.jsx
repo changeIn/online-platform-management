@@ -3,6 +3,16 @@ const _mm = new MUtil();
 
 class Product {
 
+    getProduct(productId) {
+        return _mm.request({
+            type: 'post',
+            url: '/manage/product/detail.do',
+            data: {
+                productId: productId || 0
+            }
+        })
+    }
+
     getProductList(listParam) {
         let url = '', data = {};
 

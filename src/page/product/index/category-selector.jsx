@@ -18,12 +18,48 @@ class CategorySelector extends React.Component {
             secondCategoryId: 0
         }
     }
+/*
+    componentWillMount(){
+        this.mounted = true;
+    }
+    
+    componentWillUnmount() {
+        this.mounted = false;
+    }
+*/
 
     componentDidMount() {
         this.loadFirstCategory();
     }
 
+    componentWillReceiveProps(nextProps){
+        let categoryIdChange = this.props.categoryId !== nextProps.categoryId;
+        let parentCategoryIdChange = this.props.parentCategoryId !== nextProps.parentCategoryId;
+        
+        if(!categoryIdChange && !parentCategoryIdChange) {
+            return;
+        }
+
+        // 只有一级品类
+        if(nextProps.parentCategoryId === 0) {
+            this.setState({
+                firstCategoryId: nextProps.categoryId,
+                secondCategoryId: 0
+            });
+        }
+        // 有两级品类
+        else {
+            this.setState({
+                firstCategoryId: nextProps.parentCategoryId,
+                secondCategoryId: nextProps.categoryId
+            }, () => {
+                parentCategoryIdChange && this.loadSecondCategory();
+            })
+        }
+    }
+
     loadFirstCategory() {
+        
         _product.getCategoryList().then(res => {
             this.setState({
                 firstCategoryList: res
@@ -34,6 +70,7 @@ class CategorySelector extends React.Component {
     }
 
     loadSecondCategory() {
+
         _product.getCategoryList(this.state.firstCategoryId).then(res => {
             this.setState({
                 secondCategoryList: res
@@ -44,6 +81,11 @@ class CategorySelector extends React.Component {
     }
 
     onFirstCategoryChange(e) {
+
+        if(this.props.readOnly) {
+            return;
+        }
+
         let newValue = e.target.value || 0;
         this.setState({
             firstCategoryId: newValue,
@@ -57,6 +99,11 @@ class CategorySelector extends React.Component {
     }
 
     onSecondCategoryChange(e) {
+
+        if(this.props.readOnly) {
+            return;
+        }
+
         let newValue = e.target.value || 0;
         this.setState({
             secondCategoryId: newValue
@@ -80,7 +127,11 @@ class CategorySelector extends React.Component {
     render() {
         return(
             <div className="col-md-10">
-                <select className="form-control category-select" onChange={(e)=>this.onFirstCategoryChange(e)} >
+                <select className="form-control category-select" 
+                    value={this.state.firstCategoryId}
+                    readOnly={this.props.readOnly}
+                    onChange={(e)=>this.onFirstCategoryChange(e)}
+                >
                     <option value="">请选择一级分类</option>
                     {
                         this.state.firstCategoryList.map((category, index) => {
@@ -92,7 +143,12 @@ class CategorySelector extends React.Component {
                 </select>
 
                 {this.state.secondCategoryList.length > 0 ?
-                    (<select className="form-control category-select" onChange={(e)=>this.onSecondCategoryChange(e)} >
+                    (<select 
+                        className="form-control category-select" 
+                        value={this.state.secondCategoryId}
+                        readOnly={this.props.readOnly}
+                        onChange={(e)=>this.onSecondCategoryChange(e)} 
+                    >
                         <option value="">请选择二级分类</option>
                         {
                             this.state.secondCategoryList.map((category, index) => {

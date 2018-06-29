@@ -2,6 +2,8 @@ import React from 'react';
 import Simditor from 'simditor';
 import 'simditor/styles/simditor.css';
 
+import './index.scss';
+
 // 通用富文本编辑器
 class RichEditor extends React.Component {
     constructor(props){
@@ -10,6 +12,12 @@ class RichEditor extends React.Component {
 
     componentDidMount() {
         this.loadEditor();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(this.props.defaultDetail !== nextProps.defaultDetail) {
+            this.simditor.setValue(nextProps.defaultDetail);
+        }
     }
 
     loadEditor() {
